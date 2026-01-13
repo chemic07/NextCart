@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 import { User } from "../models/user";
 import type { UserModel } from "../types/user";
 
@@ -46,10 +46,40 @@ export async function loginService(email: string, password: string) {
 
   return {
     token,
-    user: {
-      id: existingUser._id,
-      name: existingUser.name,
-      email: existingUser.email,
-    },
+    _id: existingUser._id,
+    name: existingUser.name,
+    email: existingUser.email,
+    password: existingUser.password,
+    type: existingUser.type,
+    address: existingUser.address,
   };
+}
+
+interface JwtUserPayload extends JwtPayload {
+  userId: string;
+}
+
+export async function validateToken(token: string) {
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    throw new Error("INVALID_TOKEN");
+  }
+
+  const decoded = jwt.verify(token, jwtSecret);
+
+  if (
+    typeof decoded !== "object" ||
+    decoded === null ||
+    !("userId" in decoded)
+  ) {
+    throw new Error("INVALID_TOKEN");
+  }
+
+  const user = await User.findById((decoded as JwtUserPayload).userId);
+
+  if (!user) {
+    throw new Error("INVALID_TOKEN");
+  }
+
+  return user;
 }

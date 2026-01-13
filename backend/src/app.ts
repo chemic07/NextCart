@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 // routes
-app.use("/auth", authRoutes);
+app.use(authRoutes);
 
 // health check
 app.get("/health", (_, res) => {

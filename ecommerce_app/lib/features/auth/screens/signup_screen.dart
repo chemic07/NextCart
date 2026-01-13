@@ -1,6 +1,8 @@
-import 'package:ecommerce_app/features/widgets/custom_button.dart';
-import 'package:ecommerce_app/features/widgets/custom_text_field.dart';
-import 'package:ecommerce_app/features/widgets/social_button.dart';
+import 'package:ecommerce_app/features/auth/screens/signin_screen.dart';
+import 'package:ecommerce_app/features/auth/services/auth_service.dart';
+import 'package:ecommerce_app/features/auth/widgets/custom_button.dart';
+import 'package:ecommerce_app/features/auth/widgets/custom_text_field.dart';
+import 'package:ecommerce_app/features/auth/widgets/social_button.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -13,7 +15,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  final AuthService authService = AuthService();
   final TextEditingController _nameController =
       TextEditingController();
   final TextEditingController _emailController =
@@ -23,14 +25,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool _obscurePassword = true;
 
-  void _submit() {
+  void _signUpUser() {
     if (_formKey.currentState!.validate()) {
-      // All validations passed
-      debugPrint("Name: ${_nameController.text}");
-      debugPrint("Email: ${_emailController.text}");
-      debugPrint("Password: ${_passwordController.text}");
-
-      // TODO: signup logic (API / Firebase)
+      authService.signUpUser(
+        name: _nameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+        context: context,
+      );
     }
   }
 
@@ -135,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       /// Create Account Button
                       CustomButton(
                         text: "Create Account",
-                        onTap: _submit,
+                        onTap: _signUpUser,
                       ),
                     ],
                   ),
@@ -168,7 +170,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     const Text("Already have an account?"),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SigninScreen(),
+                          ),
+                        );
                       },
                       child: const Text(" Login"),
                     ),

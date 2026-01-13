@@ -1,4 +1,6 @@
-import 'package:ecommerce_app/features/screens/signin_screen.dart';
+import 'package:ecommerce_app/common/widgets/bottom_bar.dart';
+import 'package:ecommerce_app/features/auth/screens/signin_screen.dart';
+import 'package:ecommerce_app/features/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -7,6 +9,17 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const SigninScreen(),
+      );
+
+    case HomeScreen.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const HomeScreen(),
+        settings: routeSettings,
+      );
+    case BottomBar.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const BottomBar(),
       );
 
     default:

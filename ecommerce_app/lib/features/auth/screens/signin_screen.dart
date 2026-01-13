@@ -1,6 +1,8 @@
-import 'package:ecommerce_app/features/widgets/custom_button.dart';
-import 'package:ecommerce_app/features/widgets/custom_text_field.dart';
-import 'package:ecommerce_app/features/widgets/social_button.dart';
+import 'package:ecommerce_app/features/auth/screens/signup_screen.dart';
+import 'package:ecommerce_app/features/auth/services/auth_service.dart';
+import 'package:ecommerce_app/features/auth/widgets/custom_button.dart';
+import 'package:ecommerce_app/features/auth/widgets/custom_text_field.dart';
+import 'package:ecommerce_app/features/auth/widgets/social_button.dart';
 import 'package:flutter/material.dart';
 
 class SigninScreen extends StatefulWidget {
@@ -13,6 +15,7 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   final _formKey = GlobalKey<FormState>();
+  final AuthService authService = AuthService();
 
   final TextEditingController _emailController =
       TextEditingController();
@@ -21,17 +24,20 @@ class _SigninScreenState extends State<SigninScreen> {
 
   bool _obscurePassword = true;
 
-  void _submit() {
+  void _signInUser() {
     if (_formKey.currentState!.validate()) {
-      // All validations passed
-      print("Email: ${_emailController.text}");
-      print("Password: ${_passwordController.text}");
+      authService.signInUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        context: context,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Sigin")),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -107,7 +113,7 @@ class _SigninScreenState extends State<SigninScreen> {
 
                   const SizedBox(height: 30),
 
-                  CustomButton(text: "Signin", onTap: _submit),
+                  CustomButton(text: "Signin", onTap: _signInUser),
 
                   const SizedBox(height: 30),
 
@@ -135,7 +141,12 @@ class _SigninScreenState extends State<SigninScreen> {
                       const Text("Don't have an account?"),
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignupScreen(),
+                            ),
+                          );
                         },
                         child: const Text(" Signup"),
                       ),
