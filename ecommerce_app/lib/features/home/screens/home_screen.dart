@@ -1,6 +1,9 @@
-import 'package:ecommerce_app/provider/user_provider.dart';
+import 'package:ecommerce_app/features/home/widgets/address_bar_widget.dart';
+import 'package:ecommerce_app/features/home/widgets/carousel_widget.dart';
+import 'package:ecommerce_app/features/home/widgets/deal_of_day_widget.dart';
+import 'package:ecommerce_app/features/home/widgets/home_appbar.dart';
+import 'package:ecommerce_app/features/home/widgets/top_catgeories_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -13,8 +16,24 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<UserProvider>().user;
-    print(user.toString());
-    return const Scaffold(body: Center(child: Text('this')));
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: HomeAppbar(),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            AddressBarWidget(),
+            SizedBox(height: 10),
+            TopCatgeoriesWidget(),
+            SizedBox(height: 10),
+            CarouselWidget(),
+            SizedBox(height: 10),
+            DealOfDayWidget(),
+          ],
+        ),
+      ),
+    );
   }
 }

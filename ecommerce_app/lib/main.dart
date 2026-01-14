@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/common/widgets/bottom_bar.dart';
+import 'package:ecommerce_app/common/widgets/bottom_bar_admin.dart';
 import 'package:ecommerce_app/features/auth/services/auth_service.dart';
 import 'package:ecommerce_app/provider/user_provider.dart';
 import 'package:ecommerce_app/theme/theme.dart';
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-
+    print(userProvider.user.toString());
     if (userProvider.isLoading) {
       return const MaterialApp(
         home: Scaffold(
@@ -50,10 +51,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: "Ecommerce App",
       debugShowCheckedModeBanner: false,
-      darkTheme: AppTheme.darkTheme(),
-      home: userProvider.user.token.isEmpty
-          ? SignupScreen()
-          : BottomBar(),
+      // darkTheme: AppTheme.darkTheme(),
+      theme: AppTheme.lightTheme(),
+      home: userProvider.user.token.isNotEmpty
+          ? userProvider.user.type == "user"
+                ? BottomBar()
+                : BottomBarAdmin()
+          : SignupScreen(),
       onGenerateRoute: generateRoute,
     );
   }

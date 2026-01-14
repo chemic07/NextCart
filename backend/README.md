@@ -1,15 +1,10 @@
-# backend
-
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.23. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+Admin Endpoint
+-To add new product
+{
+"name": "string",
+"description": "string",
+"price": 21,
+"images": ["dfsf","dsfas"],
+"category": "Mobiles",
+"quantity": 45
+}

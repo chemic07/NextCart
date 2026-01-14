@@ -6,4 +6,10 @@ class AppTheme {
 
     return base.copyWith();
   }
+
+  static ThemeData lightTheme() {
+    final base = ThemeData.light();
+
+    return base.copyWith();
+  }
 }

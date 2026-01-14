@@ -99,7 +99,7 @@ class AuthService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString("x-auth-token");
 
-      // debugPrint("TOKEN FROM STORAGE: $token");
+      debugPrint("TOKEN FROM STORAGE: $token");
 
       // if not token
       if (token == null || token.isEmpty) {

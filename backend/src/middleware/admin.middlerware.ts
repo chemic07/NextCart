@@ -1,6 +1,7 @@
-import jwt from "jsonwebtoken";
-import type { Request, Response, NextFunction } from "express";
-import type { JwtPayload } from "jsonwebtoken";
+import type { Response, Request, NextFunction } from "express";
+import jwt, { type JwtPayload } from "jsonwebtoken";
+import { User } from "../models/user";
+import type { UserModel } from "../types/user";
 
 interface JwtUserPayload extends JwtPayload {
   userId: string;
@@ -17,7 +18,7 @@ function isJwtUserPayload(
   );
 }
 
-export default function authMiddleware(
+export default async function adminMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
@@ -30,20 +31,29 @@ export default function authMiddleware(
     }
 
     const token = authHeader.split(" ")[1];
+    const jwtsecret = process.env.JWT_SECRET;
 
-    const jwtSecret = process.env.JWT_SECRET;
-
-    const decoded = jwt.verify(token!, jwtSecret!);
+    const decoded = jwt.verify(token!, jwtsecret!);
 
     if (!isJwtUserPayload(decoded)) {
       return res.status(401).json({ message: "Token is invalid" });
     }
 
+    const user = (await User.findById(decoded.userId)) as UserModel;
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    if (user.type !== "admin") {
+      return res.status(403).json({ message: "Admin access only" });
+    }
+
     req.user = decoded.userId;
     req.token = token;
-
     next();
-  } catch {
-    return res.status(401).json({ message: "Token is invalid" });
+  } catch (error) {
+    console.error(error);
+    return res.status(401).json({ message: "Authentication failed" });
   }
 }

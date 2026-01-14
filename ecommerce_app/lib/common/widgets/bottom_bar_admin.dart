@@ -1,25 +1,25 @@
 import 'package:ecommerce_app/constants/global_variables.dart';
-import 'package:ecommerce_app/features/account/screens/account_screen.dart';
-import 'package:ecommerce_app/features/home/screens/home_screen.dart';
+import 'package:ecommerce_app/features/admin/screens/products_screen.dart';
+import 'package:ecommerce_app/features/admin/widgets/custom_admin_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 
-class BottomBar extends StatefulWidget {
+class BottomBarAdmin extends StatefulWidget {
   static const routeName = "/actual-home";
-  const BottomBar({super.key});
+  const BottomBarAdmin({super.key});
 
   @override
-  State<BottomBar> createState() => _BottomBarState();
+  State<BottomBarAdmin> createState() => _BottomBarAdminState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBarAdminState extends State<BottomBarAdmin> {
   int _page = 0;
   double bottomBarWidth = 42;
   double bottomBarBorderWidth = 5;
 
   List<Widget> pages = [
-    const HomeScreen(),
-    const AccountScreen(),
+    const ProductsScreen(),
+    const Center(child: Text("any page")),
     const Center(child: Text("cart page")),
   ];
 
@@ -32,6 +32,10 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomAdminAppbar(),
+      ),
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _page,

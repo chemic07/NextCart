@@ -30,7 +30,7 @@ const userSchema = new Schema<IUser>(
     type: { type: String, default: "user" },
   },
   {
-    timestamps: true, // createdAt + updatedAt
+    timestamps: true,
   }
 );
 
