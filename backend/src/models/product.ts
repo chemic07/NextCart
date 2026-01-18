@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { ratingSchema } from "./rating";
 
 export interface IProduct extends Document {
   name: string;
@@ -7,6 +8,7 @@ export interface IProduct extends Document {
   images: string[];
   category: string;
   quantity: number;
+  ratings: number[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,8 +25,9 @@ const productSchema = new Schema<IProduct>(
       required: true,
       enum: ["Mobiles", "Essentials", "Appliances", "Books", "Fashion"],
     },
+    ratings: [ratingSchema],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Product = mongoose.model<IProduct>("Product", productSchema);

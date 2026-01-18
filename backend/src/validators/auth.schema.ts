@@ -12,6 +12,5 @@ export const loginSchema = z.object({
   password: z.string().min(6),
 });
 
-// inferred TS types (optional but powerful)
 export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;

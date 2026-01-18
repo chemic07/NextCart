@@ -5,4 +5,10 @@ export interface ProductModel {
   images: string[];
   category: string;
   quantity: number;
+  ratings: Rating[];
+}
+
+interface Rating {
+  userId: string;
+  rating: number;
 }

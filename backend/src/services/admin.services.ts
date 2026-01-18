@@ -15,3 +15,13 @@ export async function addProductServices(productData: ProductModel) {
 
   return product;
 }
+
+export async function getProductsService() {
+  const products = await Product.find();
+
+  return products;
+}
+
+export async function deleteProductService(productId: string) {
+  return await Product.findByIdAndDelete(productId);
+}
