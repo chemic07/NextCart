@@ -4,6 +4,7 @@ import {
   getProductsByCategory,
   getProductsByQuery,
   rateProduct,
+  getDealOfTheDay,
 } from "../controller/product.controller";
 
 const productRouter = Router();
@@ -16,5 +17,7 @@ productRouter.get(
 );
 
 productRouter.post("/api/rate-product", authMiddleware, rateProduct);
+
+productRouter.get("/api/deal-of-day", authMiddleware, getDealOfTheDay);
 
 export default productRouter;

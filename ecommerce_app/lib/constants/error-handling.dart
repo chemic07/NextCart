@@ -10,7 +10,7 @@ void HttpErrorHandle({
   required VoidCallback onSuccess,
 }) {
   switch (response.statusCode) {
-    case 200:
+    case 200 || 201:
       onSuccess();
       break;
     case 400:

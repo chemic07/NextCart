@@ -40,7 +40,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
-    print(userProvider.user.toString());
     if (userProvider.isLoading) {
       return const MaterialApp(
         home: Scaffold(

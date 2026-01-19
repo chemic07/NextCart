@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import type { Cart } from "../types/user";
 
 export interface IUser extends Document {
   name: string;
@@ -8,6 +9,7 @@ export interface IUser extends Document {
   type: string;
   createdAt: Date;
   updatedAt: Date;
+  cart: Cart[];
 }
 
 const userSchema = new Schema<IUser>(
@@ -28,6 +30,12 @@ const userSchema = new Schema<IUser>(
     },
     address: { type: String, default: "" },
     type: { type: String, default: "user" },
+    cart: [
+      {
+        product: { type: Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number, required: true, default: 1 },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -27,6 +27,7 @@ class AuthService {
         address: "",
         type: "",
         token: "",
+        cart: [],
       );
 
       http.Response res = await http.post(
@@ -140,6 +141,7 @@ class AuthService {
       ).setUser(userRes.body);
     } catch (e) {
       debugPrint(e.toString());
+
       Provider.of<UserProvider>(
         context,
         listen: false,

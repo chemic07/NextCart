@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:ecommerce_app/models/rating.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Product {
   final String name;
@@ -9,6 +11,7 @@ class Product {
   final String category;
   final double quantity;
   String? id;
+  final List<Rating>? ratings;
 
   Product({
     required this.name,
@@ -18,6 +21,7 @@ class Product {
     required this.category,
     required this.quantity,
     this.id,
+    this.ratings,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +33,7 @@ class Product {
       'category': category,
       'quantity': quantity,
       'id': id,
+      'ratings': ratings?.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -36,11 +41,16 @@ class Product {
     return Product(
       name: map['name'] as String,
       description: map['description'] as String,
-      price: map['price'] as double,
-      images: List<String>.from((map['images'] as List<String>)),
+      price: (map['price'] as num).toDouble(),
+      images: List<String>.from(map['images'] ?? []),
       category: map['category'] as String,
-      quantity: map['quantity'] as double,
-      id: map['_id'] != null ? map['_id'] as String : null,
+      quantity: (map['quantity'] as num).toDouble(),
+      id: map['_id'],
+      ratings: map['ratings'] != null
+          ? List<Rating>.from(
+              (map['ratings'] as List).map((x) => Rating.fromMap(x)),
+            )
+          : null,
     );
   }
 
@@ -51,6 +61,6 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(name: $name, description: $description, price: $price, images: $images, category: $category, quantity: $quantity, id: $id)';
+    return 'Product(name: $name, description: $description, price: $price, images: $images, category: $category, quantity: $quantity, id: $id, ratings: $ratings)';
   }
 }

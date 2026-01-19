@@ -38,7 +38,9 @@ export async function getUser(req: Request, res: Response) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const user = await User.findById(req.user).select("+password");
+  const user = await User.findById(req.user)
+    .select("+password")
+    .populate("cart.product");
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -54,5 +56,6 @@ export async function getUser(req: Request, res: Response) {
     address: user.address,
     type: user.type,
     token: req.token,
+    cart: user.cart,
   });
 }

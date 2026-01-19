@@ -3,6 +3,7 @@ import authRoutes from "./routes/auth";
 import { errorHandler } from "./middleware/error";
 import adminRouter from "./routes/admin";
 import productRouter from "./routes/product";
+import userRouter from "./routes/user";
 const app = express();
 
 app.use(express.json());
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use(authRoutes);
 app.use(adminRouter);
 app.use(productRouter);
-
+app.use(userRouter);
 app.use(errorHandler);
 
 export default app;

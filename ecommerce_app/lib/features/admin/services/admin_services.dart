@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:ecommerce_app/constants/error-handling.dart';
 import 'package:ecommerce_app/constants/global_variables.dart';
@@ -61,6 +61,77 @@ class AdminServices {
         onSuccess: () {
           showSnackBar("Product Added Successfully", context);
           Navigator.pop(context);
+        },
+      );
+    } catch (e) {
+      print(e.toString());
+      showSnackBar(e.toString(), context);
+    }
+  }
+
+  Future<List<Product>> fetchAllProducts(BuildContext context) async {
+    List<Product> productList = [];
+    try {
+      final userProvider = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      );
+
+      final token = userProvider.user.token;
+
+      http.Response res = await http.get(
+        Uri.parse("$uri/admin/get-products"),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      // final List decoded = jsonDecode(res.body);
+      HttpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          for (int i = 0; i < jsonDecode(res.body).length; i++) {
+            productList.add(
+              Product.fromJson(jsonEncode(jsonDecode(res.body)[i])),
+            );
+            // productList.add(Product.fromMap(decoded[i]));
+          }
+        },
+      );
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+    return productList;
+  }
+
+  void deletProductById({
+    required BuildContext context,
+    required String productId,
+    required VoidCallback onSuccess,
+  }) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      );
+
+      final token = userProvider.user.token;
+
+      http.Response res = await http.delete(
+        Uri.parse("$uri/admin/delete-product/$productId"),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      HttpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          onSuccess();
         },
       );
     } catch (e) {

@@ -83,3 +83,22 @@ export async function rateProduct(req: Request, res: Response) {
     res.status(500).json({ message: "Failed to rate product" });
   }
 }
+
+export async function getDealOfTheDay(req: Request, res: Response) {
+  try {
+    const products = await Product.find({});
+    if (!products || products.length === 0) {
+      return res.status(404).json({ message: "No products found" });
+    }
+    products.sort((a, b) => {
+      const aSum = a.ratings.reduce((sum, r) => sum + r.rating, 0);
+      const bSum = b.ratings.reduce((sum, r) => sum + r.rating, 0);
+      return bSum - aSum;
+    });
+
+    res.status(200).json(products[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to get deal of the day" });
+  }
+}

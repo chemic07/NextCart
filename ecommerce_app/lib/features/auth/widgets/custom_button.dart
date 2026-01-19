@@ -4,11 +4,13 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
   final bool? isLoading;
+  final Color? color;
 
   const CustomButton({
     super.key,
     required this.text,
     required this.onTap,
+    this.color = const Color.fromRGBO(225, 225, 225, 1),
     this.isLoading = false,
   });
 
@@ -20,8 +22,8 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading! ? null : onTap,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.pinkAccent,
-          disabledBackgroundColor: Colors.pinkAccent.withOpacity(0.6),
+          backgroundColor: color,
+          disabledBackgroundColor: color!,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

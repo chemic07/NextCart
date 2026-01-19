@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:ecommerce_app/models/cart.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class User {
   final String id;
@@ -9,6 +11,7 @@ class User {
   final String address;
   final String type;
   final String token;
+  final List<Cartitem> cart;
   User({
     required this.id,
     required this.email,
@@ -17,6 +20,7 @@ class User {
     required this.address,
     required this.type,
     required this.token,
+    required this.cart,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +32,7 @@ class User {
       'address': address,
       'type': type,
       'token': token,
+      "cart": cart,
     };
   }
 
@@ -40,6 +45,11 @@ class User {
       address: map['address'] as String,
       type: map['type'] as String,
       token: map['token'] as String,
+      cart: List<Cartitem>.from(
+        (map['cart'] as List).map(
+          (x) => Cartitem.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
@@ -50,6 +60,28 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, name: $name, password: $password, address: $address, type: $type, token: $token)';
+    return 'User(id: $id, email: $email, name: $name, password: $password, address: $address, type: $type, token: $token, cart: $cart)';
+  }
+
+  User copyWith({
+    String? id,
+    String? email,
+    String? name,
+    String? password,
+    String? address,
+    String? type,
+    String? token,
+    List<Cartitem>? cart,
+  }) {
+    return User(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      password: password ?? this.password,
+      address: address ?? this.address,
+      type: type ?? this.type,
+      token: token ?? this.token,
+      cart: cart ?? this.cart,
+    );
   }
 }

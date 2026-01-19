@@ -10,6 +10,7 @@ class UserProvider extends ChangeNotifier {
     address: "",
     type: "",
     token: "",
+    cart: [],
   );
 
   bool _isLoading = true;
@@ -25,6 +26,11 @@ class UserProvider extends ChangeNotifier {
 
   void setLoading(bool value) {
     _isLoading = value;
+    notifyListeners();
+  }
+
+  void setUsrFromModel(User user) {
+    _user = user;
     notifyListeners();
   }
 }

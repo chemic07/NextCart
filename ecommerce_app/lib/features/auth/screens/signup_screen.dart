@@ -138,6 +138,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       CustomButton(
                         text: "Create Account",
                         onTap: _signUpUser,
+                        color: Colors.lightBlue,
                       ),
                     ],
                   ),

@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { ratingSchema } from "./rating";
+import { ratingSchema, type IRating } from "./rating";
 
 export interface IProduct extends Document {
   name: string;
@@ -8,12 +8,12 @@ export interface IProduct extends Document {
   images: string[];
   category: string;
   quantity: number;
-  ratings: number[];
+  ratings: IRating[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-const productSchema = new Schema<IProduct>(
+export const productSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },

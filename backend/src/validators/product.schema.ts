@@ -7,5 +7,4 @@ export const productSchema = z.object({
   quantity: z.number().int().nonnegative("Quantity must be 0 or more"),
   images: z.array(z.string()),
   category: z.enum(["Mobiles", "Essentials", "Appliances", "Books", "Fashion"]),
-  ratings: z.number(),
 });
