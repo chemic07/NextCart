@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_app/common/widgets/stars.dart';
 import 'package:ecommerce_app/constants/global_variables.dart';
+import 'package:ecommerce_app/constants/utils.dart';
 import 'package:ecommerce_app/features/auth/widgets/custom_button.dart';
 import 'package:ecommerce_app/features/product-details/services/product_details_services.dart';
 import 'package:ecommerce_app/features/search/screen/search_screen.dart';
@@ -56,6 +57,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       productId: widget.product.id!,
       quantity: 1,
     );
+    showSnackBar("Product added to cart", context);
     setState(() {});
   }
 

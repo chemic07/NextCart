@@ -1,0 +1,31 @@
+{
+  "cart": [
+    {
+      "product": {
+        "_id": "696c83761aed22731c44a288",
+        "name": "Apple x pro",
+        "description": "this is apple prom max ultra legend what the fuck is this I don't wanna know about this",
+        "images": [
+          "https://res.cloudinary.com/dmmn9tu86/image/upload/v1768719216/products/mjl6icqbzmembctilczi.jpg",
+          "https://res.cloudinary.com/dmmn9tu86/image/upload/v1768719218/products/cklyusl6rks1tet0xaqh.jpg",
+          "https://res.cloudinary.com/dmmn9tu86/image/upload/v1768719221/products/uyziptdahurh4vdxsyzg.jpg"
+        ],
+        "price": 999,
+        "quantity": 10,
+        "category": "Mobiles",
+        "createdAt": "2026-01-18T06:53:42.133Z",
+        "updatedAt": "2026-01-19T05:35:22.360Z",
+        "__v": 0,
+        "ratings": [
+          {
+            "userid": "696c81e11aed22731c44a27c",
+            "rating": 5,
+            "_id": "696dc29a47a9d2e6d4f7b916"
+          }
+        ]
+      },
+      "quantity": 6,
+      "_id": "696dd255fc9c2b5ed4b4a55c"
+    }
+  ]
+}

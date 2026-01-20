@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/common/widgets/bottom_bar.dart';
+import 'package:ecommerce_app/features/address/screen/address_screen.dart';
 import 'package:ecommerce_app/features/admin/screens/add_product_screen.dart';
 import 'package:ecommerce_app/features/auth/screens/signin_screen.dart';
 import 'package:ecommerce_app/features/home/screens/category_deal_screen.dart';
@@ -51,6 +52,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => ProductDetailsScreen(product: product),
+      );
+
+    case AddressScreen.routeName:
+      var totalAmount = routeSettings.arguments as String;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => AddressScreen(amount: totalAmount),
       );
 
     default:

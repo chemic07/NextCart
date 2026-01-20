@@ -44,3 +44,68 @@ export async function addToCart(req: Request, res: Response) {
     return res.status(500).json({ message: "Failed to add to cart" });
   }
 }
+
+export async function removeFromCart(req: Request, res: Response) {
+  try {
+    const { id } = req.params; // productId
+    const userId = req.user;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const itemIndex = user.cart.findIndex(
+      (item) => item.product.toString() === id,
+    );
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: "Item not in cart" });
+    }
+
+    if (user.cart[itemIndex]!.quantity <= 1) {
+      user.cart.splice(itemIndex, 1);
+    } else {
+      user.cart[itemIndex]!.quantity -= 1;
+      console.log(user.cart[itemIndex]!.quantity);
+    }
+
+    await user.save();
+    await user.populate("cart.product");
+
+    return res.status(200).json({
+      cart: user.cart,
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "Failed to remove from cart" });
+  }
+}
+
+export async function saveUserAddress(req: Request, res: Response) {
+  try {
+    const { address } = req.body;
+    const userId = req.user;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { address },
+      { new: true },
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      address: user.address,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Failed to save the address" });
+  }
+}
