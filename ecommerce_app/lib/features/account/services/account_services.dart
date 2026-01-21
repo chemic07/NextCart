@@ -28,6 +28,7 @@ class AccountServices {
         },
       );
 
+      print(res.body);
       HttpErrorHandle(
         response: res,
         context: context,
@@ -38,6 +39,7 @@ class AccountServices {
         },
       );
     } catch (e) {
+      print("**********");
       showSnackBar(e.toString(), context);
     }
 

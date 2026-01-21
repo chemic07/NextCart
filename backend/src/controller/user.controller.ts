@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { Product } from "../models/product";
 import { User } from "../models/user";
-import { Order, type IOrder } from "../models/order";
+import { Order, type IOrder, type IOrderProduct } from "../models/order";
 
 export async function addToCart(req: Request, res: Response) {
   try {
@@ -115,7 +115,7 @@ export async function placeOrder(req: Request, res: Response) {
       return res.status(400).json({ message: "Cart is empty" });
     }
 
-    const products = [];
+    const products = [] as IOrderProduct[];
 
     for (const item of cart) {
       const product = await Product.findById(item.productId);
@@ -138,7 +138,8 @@ export async function placeOrder(req: Request, res: Response) {
         quantity: item.quantity,
         priceAtPurchase: product.price,
         name: product.name,
-        image: product.images[0],
+        image: product.images[0]!,
+        category: product.category,
       });
     }
 

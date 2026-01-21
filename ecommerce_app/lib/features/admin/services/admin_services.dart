@@ -4,6 +4,7 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:ecommerce_app/constants/error-handling.dart';
 import 'package:ecommerce_app/constants/global_variables.dart';
 import 'package:ecommerce_app/constants/utils.dart';
+import 'package:ecommerce_app/models/analytics.dart';
 import 'package:ecommerce_app/models/order.dart';
 import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/provider/user_provider.dart';
@@ -202,6 +203,43 @@ class AdminServices {
       print(res.body);
     } catch (e) {
       showSnackBar(e.toString(), context);
+    }
+  }
+
+  Future<Analytics> getAnalytics({
+    required BuildContext context,
+  }) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      );
+      final token = userProvider.user.token;
+
+      final res = await http.get(
+        Uri.parse("$uri/admin/get-analytics"),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      late Analytics analytics;
+
+      HttpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          final jsonData = jsonDecode(res.body);
+          analytics = Analytics.fromJson(jsonData);
+        },
+      );
+
+      print(res.body);
+      return analytics;
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+      rethrow;
     }
   }
 }

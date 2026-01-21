@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/constants/global_variables.dart';
+import 'package:ecommerce_app/features/admin/screens/analytics_screen.dart';
 import 'package:ecommerce_app/features/admin/screens/order_screen.dart';
 import 'package:ecommerce_app/features/admin/screens/products_screen.dart';
 import 'package:ecommerce_app/features/admin/widgets/custom_admin_appbar.dart';
@@ -20,7 +21,7 @@ class _BottomBarAdminState extends State<BottomBarAdmin> {
 
   List<Widget> pages = [
     const ProductsScreen(),
-    const Center(child: Text("any page")),
+    const AnalyticsScreen(),
     const OrderScreen(),
   ];
 

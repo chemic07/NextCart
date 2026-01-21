@@ -5,6 +5,7 @@ import { productSchema } from "../validators/product.schema";
 import {
   addProduct,
   deleteProduct,
+  getAnalytics,
   getOrders,
   getProducts,
   updateOrderStatus,
@@ -41,6 +42,13 @@ adminRouter.patch(
   authMiddleware,
   adminMiddleware,
   updateOrderStatus,
+);
+
+adminRouter.get(
+  "/admin/get-analytics",
+  authMiddleware,
+  adminMiddleware,
+  getAnalytics,
 );
 
 export default adminRouter;

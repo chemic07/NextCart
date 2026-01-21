@@ -6,6 +6,7 @@ export interface IOrderProduct {
   priceAtPurchase: number;
   name: string;
   image: string;
+  category: String;
 }
 
 export interface IOrder {
@@ -39,6 +40,12 @@ const orderProductSchema = new Schema(
     image: {
       type: String,
       required: true,
+    },
+
+    category: {
+      type: String,
+      required: true,
+      enum: ["Mobiles", "Essentials", "Appliances", "Books", "Fashion"],
     },
   },
   { _id: false },

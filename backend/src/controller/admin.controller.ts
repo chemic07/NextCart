@@ -92,3 +92,108 @@ export async function updateOrderStatus(req: Request, res: Response) {
     res.status(500).json({ error: "Failed to update order status" });
   }
 }
+
+const CATEGORIES = [
+  "Mobiles",
+  "Essentials",
+  "Appliances",
+  "Books",
+  "Fashion",
+] as const;
+
+export async function getAnalytics(req: Request, res: Response) {
+  try {
+    // Total Earnings
+    const total = await Order.aggregate([
+      { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+    ]);
+
+    // ---- Earnings by Category (raw) ----
+    const rawByCategory = await Order.aggregate([
+      { $unwind: "$products" },
+      {
+        $group: {
+          _id: "$products.category",
+          earnings: {
+            $sum: {
+              $multiply: ["$products.priceAtPurchase", "$products.quantity"],
+            },
+          },
+        },
+      },
+    ]);
+
+    // ---- Map to full category list (with zeros) ----
+    const earningsByCategory = CATEGORIES.map((cat) => {
+      const found = rawByCategory.find((r) => r._id === cat);
+      return {
+        category: cat,
+        earnings: found ? found.earnings : 0,
+      };
+    });
+
+    // Earnings by Day
+    const earningsByDay = await Order.aggregate([
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$orderedAt" },
+          },
+          earnings: { $sum: "$totalPrice" },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    // Earnings by Week
+    const earningsByWeek = await Order.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$orderedAt" },
+            week: { $week: "$orderedAt" },
+          },
+          earnings: { $sum: "$totalPrice" },
+        },
+      },
+      { $sort: { "_id.year": 1, "_id.week": 1 } },
+    ]);
+
+    // Earnings by Month
+    const earningsByMonth = await Order.aggregate([
+      {
+        $group: {
+          _id: {
+            year: { $year: "$orderedAt" },
+            month: { $month: "$orderedAt" },
+          },
+          earnings: { $sum: "$totalPrice" },
+        },
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } },
+    ]);
+
+    // Earnings by Year
+    const earningsByYear = await Order.aggregate([
+      {
+        $group: {
+          _id: { year: { $year: "$orderedAt" } },
+          earnings: { $sum: "$totalPrice" },
+        },
+      },
+      { $sort: { "_id.year": 1 } },
+    ]);
+
+    return res.status(200).json({
+      totalEarnings: total[0]?.total || 0,
+      earningsByCategory,
+      earningsByDay,
+      earningsByWeek,
+      earningsByMonth,
+      earningsByYear,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Analytics failed" });
+  }
+}
