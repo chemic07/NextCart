@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:ecommerce_app/constants/error-handling.dart';
 import 'package:ecommerce_app/constants/global_variables.dart';
 import 'package:ecommerce_app/constants/utils.dart';
+import 'package:ecommerce_app/features/auth/screens/signup_screen.dart';
 import 'package:ecommerce_app/models/order.dart';
 import 'package:ecommerce_app/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountServices {
   Future<List<Order>> getOrders(BuildContext context) async {
@@ -44,5 +46,20 @@ class AccountServices {
     }
 
     return orders;
+  }
+
+  void logOut({required BuildContext context}) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      await prefs.setString("x-auth-token", "");
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        SignupScreen.routeName,
+        (route) => false,
+      );
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
   }
 }

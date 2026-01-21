@@ -77,7 +77,7 @@ class _BottomBarAdminState extends State<BottomBarAdmin> {
                   ),
                 ),
               ),
-              child: const Icon(Icons.person_2_outlined),
+              child: const Icon(Icons.analytics),
             ),
             label: "",
           ),
