@@ -82,6 +82,11 @@ class _AddressScreenState extends State<AddressScreen> {
       );
     }
 
+    addressServices.placeOrder(
+      context: context,
+      address: addressToBeUsed,
+      totalSum: double.parse(widget.amount),
+    );
     // 👉 NEXT: place order, clear cart, navigate success screen
   }
 
@@ -214,6 +219,20 @@ class _AddressScreenState extends State<AddressScreen> {
                           const CircularProgressIndicator(),
                     );
                   },
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    final ok = _prepareAddress(address);
+                    if (!ok) return;
+
+                    addressServices.placeOrder(
+                      context: context,
+                      address: addressToBeUsed,
+                      totalSum: double.parse(widget.amount),
+                    );
+                  },
+                  child: Text("Press here test"),
                 ),
               ],
             ),

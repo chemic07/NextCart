@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { Product } from "../models/product";
 import { User } from "../models/user";
+import { Order } from "../models/order";
 
 export async function addToCart(req: Request, res: Response) {
   try {
@@ -18,16 +19,13 @@ export async function addToCart(req: Request, res: Response) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // find the item if it is already in the cart
     const cartItem = user.cart.find(
       (item) => item.product.toString() === productId,
     );
 
-    // if found, increment the quantity
     if (cartItem) {
       cartItem.quantity += 1;
     } else {
-      // if not found, add new item to cart
       user.cart.push({ product: product._id, quantity: 1 });
     }
 
@@ -107,5 +105,58 @@ export async function saveUserAddress(req: Request, res: Response) {
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: "Failed to save the address" });
+  }
+}
+export async function placeOrder(req: Request, res: Response) {
+  try {
+    const { cart, totalPrice, address } = req.body;
+
+    if (!cart || cart.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
+    }
+
+    const products = [];
+
+    for (const item of cart) {
+      const product = await Product.findById(item.productId);
+
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+
+      if (product.quantity < item.quantity) {
+        return res
+          .status(400)
+          .json({ message: `Insufficient stock for ${product.name}` });
+      }
+
+      product.quantity -= item.quantity;
+      await product.save();
+
+      products.push({
+        productId: product._id,
+        quantity: item.quantity,
+        priceAtPurchase: product.price,
+        name: product.name,
+        image: product.images[0],
+      });
+    }
+
+    await User.findByIdAndUpdate(req.user, { $set: { cart: [] } });
+
+    const order = new Order({
+      products,
+      totalPrice,
+      address,
+      userId: req.user,
+      status: 0,
+    });
+
+    const savedOrder = await order.save();
+    res.status(201).json(savedOrder);
+    console.log(savedOrder);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: "Order failed" });
   }
 }
