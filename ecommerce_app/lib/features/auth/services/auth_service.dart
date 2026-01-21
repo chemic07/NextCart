@@ -82,12 +82,15 @@ class AuthService {
           );
 
           // storing user in provider
+          print("************");
+          print(res.body);
           Provider.of<UserProvider>(
             context,
             listen: false,
           ).setUser(res.body);
           //navigate
           Navigator.popAndPushNamed(context, BottomBar.routeName);
+          print("************");
         },
       );
     } catch (e) {

@@ -113,7 +113,11 @@ class _SigninScreenState extends State<SigninScreen> {
 
                   const SizedBox(height: 30),
 
-                  CustomButton(text: "Signin", onTap: _signInUser),
+                  CustomButton(
+                    text: "Signin",
+                    onTap: _signInUser,
+                    color: Colors.blueAccent,
+                  ),
 
                   const SizedBox(height: 30),
 

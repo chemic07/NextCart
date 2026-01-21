@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-String uri = 'http://192.168.1.75:3000';
+String uri = 'https://nextcart-1-9k4r.onrender.com';
 
 //192.168.1.75
 class GlobalVariables {

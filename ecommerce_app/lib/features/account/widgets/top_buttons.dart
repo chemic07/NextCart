@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/features/account/services/account_services.dart';
 import 'package:ecommerce_app/features/account/widgets/account_button.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,10 @@ class TopButtons extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AccountButton(onTap: () {}, text: "Log Out"),
+            AccountButton(
+              onTap: () => AccountServices().logOut(context: context),
+              text: "Log Out",
+            ),
             AccountButton(onTap: () {}, text: "Your Wish List"),
           ],
         ),

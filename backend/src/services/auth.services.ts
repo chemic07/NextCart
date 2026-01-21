@@ -38,7 +38,7 @@ export async function loginService(email: string, password: string) {
 
   const token = jwt.sign(
     { userId: existingUser._id },
-    process.env.JWT_SECRET as string
+    process.env.JWT_SECRET as string,
     // {
     //   expiresIn: process.env.JWT_EXPIRES_IN || "7d",
     // }
@@ -52,6 +52,7 @@ export async function loginService(email: string, password: string) {
     password: existingUser.password,
     type: existingUser.type,
     address: existingUser.address,
+    cart: existingUser.cart,
   };
 }
 

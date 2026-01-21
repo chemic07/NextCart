@@ -1,16 +1,9 @@
 {
-  "totalEarnings": 2038,
-  "earningsByCategory": [
-    { "category": "Mobiles", "earnings": 1998 },
-    { "category": "Essentials", "earnings": 0 },
-    { "category": "Appliances", "earnings": 40 },
-    { "category": "Books", "earnings": 0 },
-    { "category": "Fashion", "earnings": 0 }
-  ],
-  "earningsByDay": [{ "_id": "2026-01-21", "earnings": 2038 }],
-  "earningsByWeek": [{ "_id": { "year": 2026, "week": 3 }, "earnings": 2038 }],
-  "earningsByMonth": [
-    { "_id": { "year": 2026, "month": 1 }, "earnings": 2038 }
-  ],
-  "earningsByYear": [{ "_id": { "year": 2026 }, "earnings": 2038 }]
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTZjODFlMTFhZWQyMjczMWM0NGEyN2MiLCJpYXQiOjE3NjkwMTIzMjV9.N9M-ZYsh7lQxr07PFOBXOYoVxx4yzX6km--BdT_j6bE",
+  "_id": "696c81e11aed22731c44a27c",
+  "name": "myname",
+  "email": "myname@gmail.com",
+  "password": "$2b$10$OjzSSAc.81RhKZpET3xVL.r1o0opaCF4viLaIr1pp7dkmYdAJ3yee",
+  "type": "user",
+  "address": "srzrf,f, xyzyxyx, cuuduyxd, xyzyxuxy"
 }

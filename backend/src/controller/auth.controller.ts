@@ -16,6 +16,7 @@ export async function signup(req: Request, res: Response) {
 
 export async function login(req: Request, res: Response) {
   try {
+    console.log("here");
     const data = await loginService(req.body.email, req.body.password);
     res.status(200).json({
       ...data,
@@ -46,8 +47,6 @@ export async function getUser(req: Request, res: Response) {
     return res.status(404).json({ message: "User not found" });
   }
 
-  console.log(user.password);
-  console.log(user);
   res.status(200).json({
     _id: user._id,
     email: user.email,
