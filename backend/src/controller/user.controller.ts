@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { Product } from "../models/product";
 import { User } from "../models/user";
-import { Order } from "../models/order";
+import { Order, type IOrder } from "../models/order";
 
 export async function addToCart(req: Request, res: Response) {
   try {
@@ -158,5 +158,21 @@ export async function placeOrder(req: Request, res: Response) {
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ message: "Order failed" });
+  }
+}
+export async function getOrders(req: Request, res: Response) {
+  try {
+    const userId = req.user;
+
+    const orders = await Order.find({ userId }).sort({ orderedAt: -1 });
+
+    if (orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("GET ORDERS ERROR:", error);
+    res.status(500).json({ message: "Failed to fetch orders" });
   }
 }
