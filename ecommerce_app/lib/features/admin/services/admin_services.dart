@@ -4,6 +4,7 @@ import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:ecommerce_app/constants/error-handling.dart';
 import 'package:ecommerce_app/constants/global_variables.dart';
 import 'package:ecommerce_app/constants/utils.dart';
+import 'package:ecommerce_app/models/order.dart';
 import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/provider/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -134,6 +135,71 @@ class AdminServices {
           onSuccess();
         },
       );
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+  }
+
+  Future<List<Order>> fetchOrders(BuildContext context) async {
+    List<Order> orderList = [];
+    try {
+      final userProvider = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      );
+
+      final token = userProvider.user.token;
+
+      http.Response res = await http.get(
+        Uri.parse("$uri/admin/get-orders"),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      HttpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: () {
+          final List data = jsonDecode(res.body);
+          orderList = data.map((e) => Order.fromMap(e)).toList();
+        },
+      );
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+    return orderList;
+  }
+
+  void changeOrderStatus({
+    required BuildContext context,
+    required Order order,
+    required int status,
+    required VoidCallback onSuccess,
+  }) async {
+    try {
+      final userProvider = Provider.of<UserProvider>(
+        context,
+        listen: false,
+      );
+      final token = userProvider.user.token;
+
+      final res = await http.patch(
+        Uri.parse("$uri/admin/order/update-status"),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({"orderId": order.id, "status": status}),
+      );
+
+      HttpErrorHandle(
+        response: res,
+        context: context,
+        onSuccess: onSuccess,
+      );
+      print(res.body);
     } catch (e) {
       showSnackBar(e.toString(), context);
     }

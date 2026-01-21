@@ -86,6 +86,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               deleteProduct(productData.id!, index);
                             },
                           ),
+                          Text(
+                            productData.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ],

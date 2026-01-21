@@ -1,8 +1,12 @@
 import 'package:ecommerce_app/constants/global_variables.dart';
+import 'package:ecommerce_app/features/admin/services/admin_services.dart';
+import 'package:ecommerce_app/features/auth/widgets/custom_button.dart';
 import 'package:ecommerce_app/features/search/screen/search_screen.dart';
 import 'package:ecommerce_app/models/order.dart';
+import 'package:ecommerce_app/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetails extends StatefulWidget {
   static const routeName = "/order-details";
@@ -16,11 +20,26 @@ class OrderDetails extends StatefulWidget {
 
 class _OrderDetailsState extends State<OrderDetails> {
   late int currentStep;
+  final AdminServices adminServices = AdminServices();
 
   @override
   void initState() {
     super.initState();
     currentStep = widget.order.status;
+  }
+
+  // !!ONLY FOR ADMIN
+  void changeOrderStatus(int status) {
+    adminServices.changeOrderStatus(
+      context: context,
+      order: widget.order,
+      status: status + 1,
+      onSuccess: () {
+        setState(() {
+          currentStep += 1;
+        });
+      },
+    );
   }
 
   void navigateToSearchScreen(String query) {
@@ -33,6 +52,11 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(
+      context,
+      listen: false,
+    ).user;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -215,6 +239,17 @@ class _OrderDetailsState extends State<OrderDetails> {
                   currentStep: currentStep,
                   physics: const NeverScrollableScrollPhysics(),
                   controlsBuilder: (context, details) {
+                    if (user.type == "admin") {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomButton(
+                          text: "Done",
+                          onTap: () =>
+                              changeOrderStatus(details.currentStep),
+                          color: GlobalVariables.secondaryColor,
+                        ),
+                      );
+                    }
                     return const SizedBox();
                   },
                   steps: [

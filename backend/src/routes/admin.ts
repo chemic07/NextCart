@@ -5,7 +5,9 @@ import { productSchema } from "../validators/product.schema";
 import {
   addProduct,
   deleteProduct,
+  getOrders,
   getProducts,
+  updateOrderStatus,
 } from "../controller/admin.controller";
 import authMiddleware from "../middleware/auth.middleware";
 
@@ -25,6 +27,20 @@ adminRouter.delete(
   authMiddleware,
   adminMiddleware,
   deleteProduct,
+);
+
+adminRouter.get(
+  "/admin/get-orders",
+  authMiddleware,
+  adminMiddleware,
+  getOrders,
+);
+
+adminRouter.patch(
+  "/admin/order/update-status",
+  authMiddleware,
+  adminMiddleware,
+  updateOrderStatus,
 );
 
 export default adminRouter;

@@ -4,7 +4,7 @@ import {
   getProductsService,
   deleteProductService,
 } from "../services/admin.services";
-import { id } from "zod/locales";
+import { Order } from "../models/order";
 
 export async function addProduct(req: Request, res: Response) {
   try {
@@ -48,5 +48,47 @@ export async function deleteProduct(req: Request, res: Response) {
     return res
       .status(500)
       .json({ message: "Server error while deleting product" });
+  }
+}
+
+export async function getOrders(req: Request, res: Response) {
+  try {
+    const userId = req.user;
+
+    const orders = await Order.find().sort({ orderedAt: -1 });
+
+    if (orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
+    res.status(200).json(orders);
+  } catch (error: any) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to get orders" });
+  }
+}
+
+export async function updateOrderStatus(req: Request, res: Response) {
+  try {
+    const { orderId, status } = req.body;
+
+    if (!orderId || !status) {
+      return res.status(400).json({ message: "Invalid params" });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true },
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    return res.status(200).json(order);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to update order status" });
   }
 }

@@ -16,9 +16,7 @@ class SingleProduct extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.black12),
       ),
-      child: Center(
-        child: Image.network(imageUrl, fit: BoxFit.cover),
-      ),
+      child: Image.network(imageUrl, fit: BoxFit.cover),
     );
   }
 }
